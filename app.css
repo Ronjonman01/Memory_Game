@@ -1,0 +1,150 @@
+.invisible {
+    display: none;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.eggDiv {
+    position: relative;
+    width:15%;
+    height: 200px;
+    margin:5%;
+    margin-top: 100px;
+}
+
+.score {
+    white-space: nowrap;
+    width:100%;
+    text-align: center;
+    align-items: center;
+}
+
+
+.scoreSpan {
+    width:33.33%;
+}
+#scoreDiv {
+    white-space: nowrap;
+    margin-left: 35%;
+    width: 30%;
+}
+
+h1 {
+    margin-left: 40%;
+    width: 20%;
+    text-align: center;
+}
+
+.permaButton {
+    width: 10%;
+
+}
+
+body {
+    white-space: nowrap;
+    margin:0px;
+    padding:0px;
+    min-width: 1050px;
+}
+#ruleButton {
+    white-space: nowrap;
+    width: 10%;
+    margin-left: 30%;
+    margin-right: 2.5%;
+}
+
+#newGameButton {
+    width: 10%;
+    margin-right:2.5%;
+    margin-left: 2.5%;
+}
+
+#continueGameButton {
+    width:10%;
+    margin-left: 2.5%;
+    margin-right: 30%;
+}
+
+#formDiv {
+    white-space: nowrap;
+    width:60%;
+    margin-left:20%;
+    margin-top: 50px;
+    text-align: center;
+}
+#startNewGameButton {
+    width: 10%;
+    margin-left:auto;
+}
+
+#ruleDiv {
+    width: 60%;
+    margin-left: 20%;
+    white-space: normal;
+}
+
+#gameDiv {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    width: 80%;
+    margin-left: 10%;
+}
+
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.chicken {
+    position:absolute;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    min-width: 100px;
+    z-index: 5;
+}
+
+.chicken2 {
+    position:absolute;
+    object-fit: contain;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
+    z-index: 4;
+}
+
+.egg {
+    position:absolute;
+    object-fit: contain;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
+    z-index: 1;
+
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.omelette {
+    display: block;
+    position: relative;
+    object-fit: contain;
+    width: 50%;
+    height: 50%;
+    margin-left: 25%;
+}
+
+.nest {
+    position:absolute;
+    object-fit: contain;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
+    margin-top: 180%;
+
+}

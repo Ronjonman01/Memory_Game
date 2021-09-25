@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <title>Briscoe Memory Game Project</title>
+</head>
+<body>
+
+<!-- Div for constant elements at top of page including heading, score, high score, new game button, etc. -->
+<div id="headerDiv">
+    <h1>Memory Game</h1>
+    <div id="scoreDiv">
+        <div class="score" id="currentScoreDiv">
+        <p>Score </br>
+            <span class ="scoreSpan" id="currentPlayer"></span>
+            <span class ="scoreSpan" id="currentScoreSpan">0</span>
+            <span class ="scoreSpan" id="currentGameType"></span>
+        </p>
+        </div>
+        <div class= "score" id="highScoreDiv">
+        <p>High Score</br>
+            <span class ="scoreSpan" id="highScorePlayer"></span>
+            <span class ="scoreSpan" id="highScoreSpan">0</span>
+            <span class ="scoreSpan" id="highScoreGameType"></span>
+        </p>
+        </div>
+    </div>
+    <br>
+    <button id="ruleButton" class="permaButton">Rules</button>
+    <button id="newGameButton" class="PermaButton">New Game</button>
+    <button id="continueGameButton" class="PermaButton">Continue Game</button>
+    <br>
+    <br>
+</div>
+
+<!-- Div containing rules -->
+<div id="ruleDiv" class="invisible">
+    <p>Click on the chickens and they will lay beautifully colored eggs. Find two chickens that lay the same colored eggs to keep them. Once you have found all the matching eggs, you may collect them all!</p>
+</div>
+
+<!-- Div for new game form -->
+<div id="formDiv" class="invisible">
+    <form><h3>New Game Form</h3>
+        <label for="userName">Player Name: </label>
+        <input id="userName" type="text" placeholder="Please Enter A Player Name">
+        <ul>How many eggs would you like to collect? <br>
+            <div id="radioDiv">
+            <label for="fourGame">4 Chickens</label>
+            <input id="fourGame" type="radio" name="gameType" value="4"><br>
+            <label for="eightGame">8 Chickens</label>
+            <input id="eightGame" type="radio" name="gameType" value="8"><br>
+            <label id="sixteenGame" type="checkbox">16 Chickens</label>
+            <input id="sixteenGame" type="radio" name="gameType" value="16"><br>
+            <label for="thirtyTwoGame">32 Chickens</label>
+            <input id="thirtyTwoGame" type="radio" name="gameType" value="32">
+            </div>
+        </ul>
+        <br>
+    </form>
+    <button id="startNewGameButton">Begin New Game</button>
+</div>
+
+
+<!-- Div containing Game -->
+<div id="gameDiv" class="invisible">
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>
