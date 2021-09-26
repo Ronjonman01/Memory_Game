@@ -1,3 +1,2 @@
 # Memory_Game
-These files in a folder will generate a browser game that will try to access a bunch of pictures you don't have. =P
-I will be updating it to use images available online.
+Enjoy my stab at a memory game. There is one known error where if you refresh the page and/or continue the game it brings back chickens you had previously found. This of course means that your score is incorrect. I will address this in a future update as well as making it not so ugly to look at. =P
