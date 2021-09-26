@@ -232,7 +232,7 @@ function populateGameDiv() {
         eggDiv.appendChild(egg)
         let chicken2 = document.createElement('img')
         chicken2.id = `chicken2-${i}`
-        chicken2.src = "chicken2.jpg"
+        chicken2.src = "chicken2.gif"
         chicken2.classList.add('chicken2')
         eggDiv.appendChild(chicken2)
         let chicken = document.createElement('img')
@@ -253,8 +253,11 @@ function depopulateGameDiv() {
 
 function removeMatchedPair(removalDiv) {
     setTimeout(function(){
-    removalDiv.classList.add("hidden")
-    },1000)
+        //puts transition time of eggs back to 0s so they dont linger
+        document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "0s";
+        document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "0s";
+        removalDiv.classList.add("hidden")
+    },2000)
 
     //Checks to see if all eggs have been found
     setTimeout(function(){
@@ -269,14 +272,14 @@ function removeMatchedPair(removalDiv) {
     if(hiddenNum===parseInt(localStorage.gameType)){
         endGame()
     }
-    },1200)
+    },2200)
 }
 
 
 document.addEventListener('mouseover',function(e) {
     if(e.target.classList.contains('chicken')){
     e.target.classList.toggle('hidden')
-    setTimeout(function(){e.target.classList.toggle('hidden')},1000)
+    setTimeout(function(){e.target.classList.toggle('hidden')},1800)
     }
 })
 
@@ -296,6 +299,7 @@ document.addEventListener('click',function(e) {
                 firstSelectedChicken = e.target.id[e.target.id.length-1]
             }
             //drop egg action
+            document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "1s";
             document.querySelector("#egg"+firstSelectedChicken).style.marginTop = '120%'
             document.querySelector("#egg"+firstSelectedChicken).style.zIndex = '40'
         }
@@ -311,36 +315,43 @@ document.addEventListener('click',function(e) {
             }
             
             //drop egg action
+            document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "1s";
             document.querySelector("#egg"+secondSelectedChicken).style.marginTop = '120%'
             document.querySelector("#egg"+secondSelectedChicken).style.zIndex = '40'
 
 
             //Makes chickens and eggs hidden if correctly paired
             if(localStorage.getItem(firstSelectedChicken)===localStorage.getItem(secondSelectedChicken)) {
-                
+               
+                //specifies eggDivs and then sends them to the removal function
                 let firstDivId = '#eggDiv'+ firstSelectedChicken
                 let removeThisDiv = document.querySelector(firstDivId)
                 removeMatchedPair(removeThisDiv)
                 let secondDivId = '#eggDiv' + secondSelectedChicken
                 removeThisDiv = document.querySelector(secondDivId)
                 removeMatchedPair(removeThisDiv)
+                
+                //resets the selected chickens, set to take just a little longer than the removal function so that those are all gone befor the user can select the next chicken
                 setTimeout(function() {
                 chickensSelected=0
                 firstSelectedChicken=99
                 secondSelectedChicken=98
-                },1100)
+                },2100)
             }
-            //or restores both chickens to original position
+            //restores both eggd to original position
             else {
-            setTimeout(function(){
-                document.querySelector("#egg"+firstSelectedChicken).style.marginTop = '20%'
-                document.querySelector("#egg"+firstSelectedChicken).style.zIndex = '1'
-                document.querySelector("#egg"+secondSelectedChicken).style.marginTop = '20%'
-                document.querySelector("#egg"+secondSelectedChicken).style.zIndex = '1'
-                chickensSelected=0
-                firstSelectedChicken=99
-                secondSelectedChicken=98
-                        },1000)
+                setTimeout(function(){
+                    document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "0s";
+                    document.querySelector("#egg"+firstSelectedChicken).style.marginTop = '20%'
+                    document.querySelector("#egg"+firstSelectedChicken).style.zIndex = '1'
+                    document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "0s";
+                    document.querySelector("#egg"+secondSelectedChicken).style.marginTop = '20%'
+                    document.querySelector("#egg"+secondSelectedChicken).style.zIndex = '1'
+                    chickensSelected=0
+                    firstSelectedChicken=99
+                    secondSelectedChicken=98
+                    },2000)
+
             }
                     
             
@@ -373,8 +384,11 @@ function endGame() {
     depopulateGameDiv()
 
     //Leaves a congrats message and puts a picture of an omelette
-    const congrats = document.createElement('p')
+    const congrats = document.createElement('h3')
     congrats.innerText = "Congratulations, now make me an omelette!"
+    congrats.style.width = "100%"
+    congrats.style.color = "white"
+    congrats.style.textAlign = "center"
     game.appendChild(congrats)
     const omelette = document.createElement('img')
     omelette.src = "omelette.gif"
