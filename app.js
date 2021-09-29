@@ -108,13 +108,14 @@ function createGame() {
     }
     clearForm()
     setScore()
-    buildBoard()
+    arrangeChickensAndEggs()
+    if(localStorage.hiddenDivs!=undefined){
+        localStorage.removeItem('hiddenDivs')
+    }
     populateGameDiv()
 }
 
 function clearForm() {
-    const name = document.querySelector("#userName")
-    localStorage.setItem("userName",name.value)
     const types = document.getElementsByName("gameType")
     for(i=0;i<types.length;i++){
         if(types[i].checked === true) {
@@ -191,11 +192,9 @@ function setScore() {
 }
 
 
-function buildBoard() {
+//Function to assign each chicken a colored egg and put that information in local storage
+function arrangeChickensAndEggs() {
     let chickenNumber=parseInt(localStorage.gameType)
-    for(i=1;i<=chickenNumber;i++){
-        localStorage.removeItem(`${i}`)
-    }
     let chickenArray= []
 
     for(i=1;i<=chickenNumber;i++){
@@ -211,22 +210,29 @@ function buildBoard() {
 }
 
 function populateGameDiv() {
+    
+    //Clear out any junk just in case.
     depopulateGameDiv()
+    setScore()
 
     //Gets all our chickens out of storage and places them into the game div
     for(i=1;i<=localStorage.gameType;i++) {
         let eggDiv = document.createElement('div')
         eggDiv.id = `eggDiv${i}`
         eggDiv.classList.add('eggDiv')
+        if(localStorage.hiddenDivs != undefined &&localStorage.hiddenDivs.includes(`${i}`)){
+            eggDiv.classList.add('hidden')
+        }
         game.appendChild(eggDiv)
         let nest = document.createElement('img')
         nest.id = `nest${i}`
         nest.src = "nest.png"
         nest.classList.add("nest")
+        eggDiv.appendChild(nest)
         let egg = document.createElement('img')
         egg.id = `egg${i}`
         egg.classList.add("egg")
-        eggDiv.appendChild(nest)
+        egg.classList.add("hidden")
         let fileName = localStorage.getItem(`${i}`) + ".png"
         egg.src = fileName
         eggDiv.appendChild(egg)
@@ -240,6 +246,7 @@ function populateGameDiv() {
         chicken.src = "chicken.jpg"
         chicken.classList.add('chicken')
         eggDiv.appendChild(chicken)
+        
 
     }
 
@@ -251,28 +258,35 @@ function depopulateGameDiv() {
     }
 }
 
-function removeMatchedPair(removalDiv) {
-    setTimeout(function(){
-        //puts transition time of eggs back to 0s so they dont linger
-        document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "0s";
-        document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "0s";
-        removalDiv.classList.add("hidden")
-    },2000)
+function removeEggDiv(selectedChicken) {
+    //makes sure the egg doesnt linger 
+    document.querySelector("#egg"+selectedChicken).style.transitionDuration = "0s";
 
-    //Checks to see if all eggs have been found
-    setTimeout(function(){
-    let hiddenNum = 0
-    let thisEgg= ""
+    //hides entire eggDiv until game is ended
+    let removalDiv = document.querySelector('#eggDiv'+ selectedChicken)
+    removalDiv.classList.add("hidden")
+
+    //Tells local storage this pair was found so we can hide them if we 'continue game' or refresh the page
+    if(localStorage.hiddenDivs===undefined) {
+        localStorage.hiddenDivs = ''
+        localStorage.hiddenDivs = localStorage.hiddenDivs + `${selectedChicken}`
+    }
+    else {
+        localStorage.hiddenDivs = localStorage.hiddenDivs + `${selectedChicken}`
+    }
+}
+
+function checkEndGame() {
+    let numFound = 0
+    
     for(i=1;i<=parseInt(localStorage.gameType);i++){
-        thisEgg = "#eggDiv" + `${i}`
-        if(document.querySelector(thisEgg).classList.contains("hidden")===true){
-            hiddenNum++
+        if(localStorage.hiddenDivs!= undefined && localStorage.hiddenDivs.includes(`${i}`)){
+            numFound++
         }
     }
-    if(hiddenNum===parseInt(localStorage.gameType)){
+    if(numFound===parseInt(localStorage.gameType)){
         endGame()
     }
-    },2200)
 }
 
 
@@ -283,6 +297,22 @@ document.addEventListener('mouseover',function(e) {
     }
 })
 
+
+function dropEgg(selectedChicken) {
+    document.querySelector("#egg"+selectedChicken).classList.toggle("hidden")
+    document.querySelector("#egg"+selectedChicken).style.transitionDuration = "1s";
+    document.querySelector("#egg"+selectedChicken).style.marginTop = '120%'
+    document.querySelector("#egg"+selectedChicken).style.zIndex = '40'
+}
+
+function returnEgg(selectedChicken) {
+    document.querySelector("#egg"+selectedChicken).style.transitionDuration = "0s";
+    document.querySelector("#egg"+selectedChicken).classList.toggle("hidden")
+    document.querySelector("#egg"+selectedChicken).style.marginTop = '20%'
+    document.querySelector("#egg"+selectedChicken).style.zIndex = '1'
+}
+
+//Event Listener for clicking chickens
 document.addEventListener('click',function(e) {
     if(e.target.classList.contains('chicken') || e.target.classList.contains('chicken2')){
         if(chickensSelected===0){
@@ -290,6 +320,7 @@ document.addEventListener('click',function(e) {
             currentScore++
             localStorage.setItem('currentScore',currentScore)
             currentScoreSpan.innerText = localStorage.getItem('currentScore')
+
             //tells us we have selected the first chicken and lets us know which one it is. Uses if statement to detect if the number is double or single digit and captures it
             chickensSelected++
             if(e.target.id[e.target.id.length-2]==='1'){
@@ -299,9 +330,7 @@ document.addEventListener('click',function(e) {
                 firstSelectedChicken = e.target.id[e.target.id.length-1]
             }
             //drop egg action
-            document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "1s";
-            document.querySelector("#egg"+firstSelectedChicken).style.marginTop = '120%'
-            document.querySelector("#egg"+firstSelectedChicken).style.zIndex = '40'
+            dropEgg(firstSelectedChicken)
         }
         else if(chickensSelected===1 && firstSelectedChicken != e.target.id[e.target.id.length-1]){
             
@@ -315,38 +344,29 @@ document.addEventListener('click',function(e) {
             }
             
             //drop egg action
-            document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "1s";
-            document.querySelector("#egg"+secondSelectedChicken).style.marginTop = '120%'
-            document.querySelector("#egg"+secondSelectedChicken).style.zIndex = '40'
+            dropEgg(secondSelectedChicken)
 
 
             //Makes chickens and eggs hidden if correctly paired
             if(localStorage.getItem(firstSelectedChicken)===localStorage.getItem(secondSelectedChicken)) {
                
                 //specifies eggDivs and then sends them to the removal function
-                let firstDivId = '#eggDiv'+ firstSelectedChicken
-                let removeThisDiv = document.querySelector(firstDivId)
-                removeMatchedPair(removeThisDiv)
-                let secondDivId = '#eggDiv' + secondSelectedChicken
-                removeThisDiv = document.querySelector(secondDivId)
-                removeMatchedPair(removeThisDiv)
+                setTimeout(removeEggDiv,2000,firstSelectedChicken)
+                setTimeout(removeEggDiv,2000,secondSelectedChicken)
+                setTimeout(checkEndGame,2001)
                 
                 //resets the selected chickens, set to take just a little longer than the removal function so that those are all gone befor the user can select the next chicken
                 setTimeout(function() {
                 chickensSelected=0
                 firstSelectedChicken=99
                 secondSelectedChicken=98
-                },2100)
+                },2002)
             }
             //restores both eggd to original position
             else {
                 setTimeout(function(){
-                    document.querySelector("#egg"+firstSelectedChicken).style.transitionDuration = "0s";
-                    document.querySelector("#egg"+firstSelectedChicken).style.marginTop = '20%'
-                    document.querySelector("#egg"+firstSelectedChicken).style.zIndex = '1'
-                    document.querySelector("#egg"+secondSelectedChicken).style.transitionDuration = "0s";
-                    document.querySelector("#egg"+secondSelectedChicken).style.marginTop = '20%'
-                    document.querySelector("#egg"+secondSelectedChicken).style.zIndex = '1'
+                    returnEgg(firstSelectedChicken)
+                    returnEgg(secondSelectedChicken)
                     chickensSelected=0
                     firstSelectedChicken=99
                     secondSelectedChicken=98
@@ -370,19 +390,19 @@ function endGame() {
     }
     if(type==='8' && (localStorage.eightGameHighScoreUser===undefined ||    parseInt(score) < parseInt(localStorage.eightGameHighScore))) {
         localStorage.setItem('eightGameHighScore',score)
-        localStorage.setItem('eightGameHighScoreUser',localStorage. userName)
+        localStorage.setItem('eightGameHighScoreUser',localStorage.userName)
     }
     if(type==='16' && (localStorage.sixteenGameHighScoreUser===undefined || parseInt(score) < parseInt(localStorage.sixteenGameHighScore))) {
         localStorage.setItem('sixteenGameHighScore',score)
-        localStorage.setItem('sixteenGameHighScoreUser',localStorage.   userName)
+        localStorage.setItem('sixteenGameHighScoreUser',localStorage.userName)
     }
     if(type==='32' && (localStorage.thirtyTwoGameHighScoreUser===undefined  || parseInt(score) < parseInt(localStorage.thirtyTwoGameHighScore))) {
         localStorage.setItem('thirtyTwoGameHighScore',score)
-        localStorage.setItem('thirtyTwoGameHighScoreUser',localStorage. userName)
+        localStorage.setItem('thirtyTwoGameHighScoreUser',localStorage.userName)
     }
     //Gets rid of all the hidden eggDivs
+    setScore()
     depopulateGameDiv()
-
     //Leaves a congrats message and puts a picture of an omelette
     const congrats = document.createElement('h3')
     congrats.innerText = "Congratulations, now make me an omelette!"
@@ -395,6 +415,7 @@ function endGame() {
     omelette.classList.add("omelette")
     game.appendChild(omelette)
 
+    //Clears out all game specific information
     for(i=1;i<=parseInt(localStorage.gameType);i++) {
         localStorage.removeItem(`${i}`)
     }
@@ -402,5 +423,6 @@ function endGame() {
         localStorage.removeItem('gameType')
         localStorage.removeItem('userName')
         localStorage.removeItem('gameInProgress')
+        localStorage.removeItem('hiddenDivs')
 }
 
