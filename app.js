@@ -323,7 +323,7 @@ document.addEventListener('click',function(e) {
 
             //tells us we have selected the first chicken and lets us know which one it is. Uses if statement to detect if the number is double or single digit and captures it
             chickensSelected++
-            if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2'){
+            if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
             firstSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
             }
             else{
@@ -336,7 +336,7 @@ document.addEventListener('click',function(e) {
             
             //tells us we have selected the first chicken and lets us know which one it is.
             chickensSelected++
-            if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2'){
+            if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
                 secondSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
             }
             else{
