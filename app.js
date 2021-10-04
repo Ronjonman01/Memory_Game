@@ -9,7 +9,7 @@ let chickensSelected = 0
 
 
 
-
+//This event listener manages the clicking of buttons to start and continue games as well as looking at the rules
 document.addEventListener('click',function(e){
     const rules = document.querySelector("#ruleDiv")
     const form = document.querySelector("#formDiv")
@@ -91,6 +91,7 @@ document.addEventListener('click',function(e){
     }
 })
 
+//This function runs at the setup a new game
 function createGame() {
     //Get rid of form div and pull up game div, let browser know game is started, and clear form
     document.querySelector("#gameDiv").classList.remove("invisible")
@@ -118,6 +119,8 @@ function createGame() {
     populateGameDiv()
 }
 
+
+//This function clears the form used to create a new game
 function clearForm() {
     const types = document.getElementsByName("gameType")
     for(i=0;i<types.length;i++){
@@ -125,7 +128,7 @@ function clearForm() {
             types[i].checked = false
         }
     }
-    name.value=""
+    document.querySelector('#userName').value=""
 }
 
 function shuffleArray(array) {
@@ -226,7 +229,7 @@ function populateGameDiv() {
         if(localStorage.hiddenDivs != undefined &&localStorage.hiddenDivs.includes(`${i}`)){
             eggDiv.classList.add('hidden')
         }
-        game.appendChild(eggDiv)
+        document.querySelector("#gameDiv").appendChild(eggDiv)
         let nest = document.createElement('img')
         nest.id = `nest${i}`
         nest.src = "nest.png"
@@ -321,7 +324,7 @@ document.addEventListener('click',function(e) {
     if(e.target.classList.contains('chicken') || e.target.classList.contains('chicken2')){
         if(parseInt(localStorage.getItem('chickensSelected'))===0){
             //adjusts score
-            let currentScore = pasrseInt(localStorage.getItem('currentScore')) + 1
+            let currentScore = parseInt(localStorage.getItem('currentScore')) + 1
             localStorage.setItem('currentScore',currentScore)
             currentScoreSpan.innerText = localStorage.getItem('currentScore')
 
@@ -329,12 +332,14 @@ document.addEventListener('click',function(e) {
             localStorage.setItem('chickensSelected',1)
             if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
                 let firstSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
+                localStorage.setItem('firstSelectedChicken',firstSelectedChicken)
             }
             else{
                 let firstSelectedChicken = e.target.id[e.target.id.length-1]
+                localStorage.setItem('firstSelectedChicken',firstSelectedChicken)
             }
             //drop egg action
-            dropEgg(firstSelectedChicken)
+            dropEgg(localStorage.getItem('firstSelectedChicken'))
         }
         else if(parseInt(localStorage.getItem('chickensSelected'))===1 && firstSelectedChicken != e.target.id[e.target.id.length-1]){
             
@@ -342,21 +347,23 @@ document.addEventListener('click',function(e) {
             localStorage.setItem('chickensSelected',99)
             if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
                 let secondSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
+                localStorage.setItem('secondSelectedChicken',secondSelectedChicken)
             }
             else{
                 let secondSelectedChicken = e.target.id[e.target.id.length-1]
+                localStorage.setItem('secondSelectedChicken',secondSelectedChicken)
             }
             
             //drop egg action
-            dropEgg(secondSelectedChicken)
+            dropEgg(localStorage.getItem('secondSelectedChicken'))
 
 
             //Makes chickens and eggs hidden if correctly paired
-            if(localStorage.getItem(firstSelectedChicken)===localStorage.getItem(secondSelectedChicken)) {
+            if(localStorage.getItem(localStorage.getItem('firstSelectedChicken'))===localStorage.getItem(localStorage.getItem('secondSelectedChicken'))) {
                
                 //specifies eggDivs and then sends them to the removal function
-                setTimeout(removeEggDiv,2000,firstSelectedChicken)
-                setTimeout(removeEggDiv,2000,secondSelectedChicken)
+                setTimeout(removeEggDiv,2000,localStorage.getItem('firstSelectedChicken'))
+                setTimeout(removeEggDiv,2000,localStorage.getItem('secondSelectedChicken'))
                 setTimeout(checkEndGame,2001)
                 
                 //resets the selected chickens, set to take just a little longer than the removal function so that those are all gone befor the user can select the next chicken
@@ -365,8 +372,8 @@ document.addEventListener('click',function(e) {
             //restores both eggd to original position
             else {
                 setTimeout(function(){
-                    returnEgg(firstSelectedChicken)
-                    returnEgg(secondSelectedChicken)
+                    returnEgg(localStorage.getItem('firstSelectedChicken'))
+                    returnEgg(localStorage.getItem('secondSelectedChicken'))
                     localStorage.setItem('chickensSelected',0)
                     },2000)
 
@@ -407,11 +414,11 @@ function endGame() {
     congrats.style.width = "100%"
     congrats.style.color = "white"
     congrats.style.textAlign = "center"
-    game.appendChild(congrats)
+    document.querySelector("#gameDiv").appendChild(congrats)
     const omelette = document.createElement('img')
     omelette.src = "omelette.gif"
     omelette.classList.add("omelette")
-    game.appendChild(omelette)
+    document.querySelector("#gameDiv").appendChild(omelette)
 
     //Clears out all game specific information
     for(i=1;i<=parseInt(localStorage.gameType);i++) {
@@ -422,5 +429,8 @@ function endGame() {
         localStorage.removeItem('userName')
         localStorage.removeItem('gameInProgress')
         localStorage.removeItem('hiddenDivs')
+        setTimeout(function() {localStorage.removeItem('chickensSelected')},2003)
+        localStorage.removeItem('firstSelectedChicken')
+        localStorage.removeItem('secondSelectedChicken')
 }
 
