@@ -93,7 +93,7 @@ document.addEventListener('click',function(e){
 
 function createGame() {
     //Get rid of form div and pull up game div, let browser know game is started, and clear form
-    game.classList.remove("invisible")
+    document.querySelector("#gameDiv").classList.remove("invisible")
     form.classList.add("invisible")
     localStorage.setItem("gameInProgress", "true")
     
@@ -253,8 +253,8 @@ function populateGameDiv() {
 }
 
 function depopulateGameDiv() {
-    while(game.firstChild) {
-        game.removeChild(game.firstChild)
+    while(document.querySelector("#gameDiv").firstChild) {
+        document.querySelector("#gameDiv").removeChild(game.firstChild)
     }
 }
 
