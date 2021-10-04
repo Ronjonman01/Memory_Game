@@ -94,7 +94,7 @@ document.addEventListener('click',function(e){
 function createGame() {
     //Get rid of form div and pull up game div, let browser know game is started, and clear form
     document.querySelector("#gameDiv").classList.remove("invisible")
-    form.classList.add("invisible")
+    document.querySelector("#formDiv").classList.add("invisible")
     localStorage.setItem("gameInProgress", "true")
     
     //Store game data
