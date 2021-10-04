@@ -1,18 +1,19 @@
+//A creative take on a memory game.
 
-    const rules = document.querySelector("#ruleDiv")
-    const form = document.querySelector("#formDiv")
-    const game = document.querySelector("#gameDiv")
-    let firstSelectedChicken =99
-    let secondSelectedChicken =98
-    let chickensSelected = 0
-    let currentScore = parseInt(localStorage.currentScore)
-    if(currentScore===undefined){currentScore=0}
-//New Game Form
+    
+//Global variables used to ensure extra chickens can't be clicked
+let firstSelectedChicken =99
+let secondSelectedChicken =98
+let chickensSelected = 0
+
 
 
 
 
 document.addEventListener('click',function(e){
+    const rules = document.querySelector("#ruleDiv")
+    const form = document.querySelector("#formDiv")
+    const game = document.querySelector("#gameDiv")
     if(e.target.id === "ruleButton"){
         rules.classList.remove("invisible")
         if(form.classList.contains("invisible") === false) {
@@ -54,8 +55,7 @@ document.addEventListener('click',function(e){
 
         //Get data from form, clear form, and start the new game
         else{
-            currentScore = 0
-            localStorage.setItem('currentScore',currentScore)
+            localStorage.setItem('currentScore',0)
             createGame()
 
         }
@@ -66,8 +66,8 @@ document.addEventListener('click',function(e){
         document.querySelector('#sureButton').remove()
         document.querySelector('#cancelButton').remove()
 
-        currentScore = 0
-        localStorage.setItem('currentScore',currentScore)
+        
+        localStorage.setItem('currentScore',0)
         createGame()
     }
 
@@ -317,7 +317,7 @@ document.addEventListener('click',function(e) {
     if(e.target.classList.contains('chicken') || e.target.classList.contains('chicken2')){
         if(chickensSelected===0){
             //adjusts score
-            currentScore++
+            let currentScore = pasrseInt(localStorage.getItem('currentScore')) + 1
             localStorage.setItem('currentScore',currentScore)
             currentScoreSpan.innerText = localStorage.getItem('currentScore')
 
