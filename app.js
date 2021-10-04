@@ -97,6 +97,9 @@ function createGame() {
     document.querySelector("#formDiv").classList.add("invisible")
     localStorage.setItem("gameInProgress", "true")
     
+    //Store some data we will use in click events to make sure too many chickens aren't selected
+    localStorage.setItem('chickensSelected',0)
+
     //Store game data
     const name = document.querySelector("#userName")
     localStorage.setItem("userName",name.value)
@@ -253,8 +256,9 @@ function populateGameDiv() {
 }
 
 function depopulateGameDiv() {
-    while(document.querySelector("#gameDiv").firstChild) {
-        document.querySelector("#gameDiv").removeChild(game.firstChild)
+    const game = document.querySelector("#gameDiv")
+    while(game.firstChild) {
+        game.removeChild(game.firstChild)
     }
 }
 
@@ -315,32 +319,32 @@ function returnEgg(selectedChicken) {
 //Event Listener for clicking chickens
 document.addEventListener('click',function(e) {
     if(e.target.classList.contains('chicken') || e.target.classList.contains('chicken2')){
-        if(chickensSelected===0){
+        if(parseInt(localStorage.getItem('chickensSelected'))===0){
             //adjusts score
             let currentScore = pasrseInt(localStorage.getItem('currentScore')) + 1
             localStorage.setItem('currentScore',currentScore)
             currentScoreSpan.innerText = localStorage.getItem('currentScore')
 
             //tells us we have selected the first chicken and lets us know which one it is. Uses if statement to detect if the number is double or single digit and captures it
-            chickensSelected++
+            localStorage.setItem('chickensSelected',1)
             if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
-            firstSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
+                let firstSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
             }
             else{
-                firstSelectedChicken = e.target.id[e.target.id.length-1]
+                let firstSelectedChicken = e.target.id[e.target.id.length-1]
             }
             //drop egg action
             dropEgg(firstSelectedChicken)
         }
-        else if(chickensSelected===1 && firstSelectedChicken != e.target.id[e.target.id.length-1]){
+        else if(parseInt(localStorage.getItem('chickensSelected'))===1 && firstSelectedChicken != e.target.id[e.target.id.length-1]){
             
             //tells us we have selected the first chicken and lets us know which one it is.
-            chickensSelected++
+            localStorage.setItem('chickensSelected',99)
             if(e.target.id[e.target.id.length-2]==='1' || e.target.id[e.target.id.length-2]==='2' || e.target.id[e.target.id.length-2]==='3'){
-                secondSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
+                let secondSelectedChicken = e.target.id[e.target.id.length-2] + e.target.id[e.target.id.length-1]
             }
             else{
-                secondSelectedChicken = e.target.id[e.target.id.length-1]
+                let secondSelectedChicken = e.target.id[e.target.id.length-1]
             }
             
             //drop egg action
@@ -356,20 +360,14 @@ document.addEventListener('click',function(e) {
                 setTimeout(checkEndGame,2001)
                 
                 //resets the selected chickens, set to take just a little longer than the removal function so that those are all gone befor the user can select the next chicken
-                setTimeout(function() {
-                chickensSelected=0
-                firstSelectedChicken=99
-                secondSelectedChicken=98
-                },2002)
+                setTimeout(function() {localStorage.setItem('chickensSelected',0)},2002)
             }
             //restores both eggd to original position
             else {
                 setTimeout(function(){
                     returnEgg(firstSelectedChicken)
                     returnEgg(secondSelectedChicken)
-                    chickensSelected=0
-                    firstSelectedChicken=99
-                    secondSelectedChicken=98
+                    localStorage.setItem('chickensSelected',0)
                     },2000)
 
             }
