@@ -376,9 +376,10 @@ document.addEventListener('click',function(e) {
                     returnEgg(localStorage.getItem('firstSelectedChicken'))
                     returnEgg(localStorage.getItem('secondSelectedChicken'))
                     localStorage.setItem('chickensSelected',0)
-                    },2000)
                     localStorage.setItem('firstSelectedChicken',98)
                     localStorage.setItem('secondSelectedChicken',99)
+                    },2000)
+                   
 
             }
                     
