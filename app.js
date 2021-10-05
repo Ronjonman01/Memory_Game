@@ -317,8 +317,7 @@ function returnEgg(selectedChicken) {
     document.querySelector("#egg"+selectedChicken).classList.toggle("hidden")
     document.querySelector("#egg"+selectedChicken).style.marginTop = '20%'
     document.querySelector("#egg"+selectedChicken).style.zIndex = '1'
-    localStorage.setItem('firstSelectedChicken',98)
-    localStorage.setItem('secondSelectedChicken',99)
+  
 }
 
 //Event Listener for clicking chickens
@@ -378,6 +377,8 @@ document.addEventListener('click',function(e) {
                     returnEgg(localStorage.getItem('secondSelectedChicken'))
                     localStorage.setItem('chickensSelected',0)
                     },2000)
+                    localStorage.setItem('firstSelectedChicken',98)
+                    localStorage.setItem('secondSelectedChicken',99)
 
             }
                     
