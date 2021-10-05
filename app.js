@@ -317,6 +317,8 @@ function returnEgg(selectedChicken) {
     document.querySelector("#egg"+selectedChicken).classList.toggle("hidden")
     document.querySelector("#egg"+selectedChicken).style.marginTop = '20%'
     document.querySelector("#egg"+selectedChicken).style.zIndex = '1'
+    localStorage.setItem('firstSelectedChicken',98)
+    localStorage.setItem('secondSelectedChicken',99)
 }
 
 //Event Listener for clicking chickens
