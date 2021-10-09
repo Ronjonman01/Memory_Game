@@ -452,7 +452,9 @@ function checkEndGame() {
         }
     }
     if(localStorage.gametype === '16') {
+        console.log('here')
         if(localStorage.hiddenDivs.length === 23){
+            console.log('here too')
             endGame()
         }
     }
