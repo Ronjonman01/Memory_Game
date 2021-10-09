@@ -446,9 +446,20 @@ function removeEggDiv(selectedChicken) {
 
 //This function checks to see if all pairs have been found. If they have, it calls the 'endgame' function.
 function checkEndGame() {
-
-    if(localStorage.hiddenDivs.length === parseInt(localStorage.gameType)){
-        endGame()
+    if(localStorage.gameType === '8' || localStorage.gameType === '4' ){
+        if(localStorage.hiddenDivs.length === parseInt(localStorage.gameType)){
+            endGame()
+        }
+    }
+    if(localStorage.gametype === '16') {
+        if(localStorage.hiddenDivs.length === 23){
+            endGame()
+        }
+    }
+    if (localStorage.gameType === '32') {
+        if(localStorage.hiddenDivs.length === 55){
+            endGame()
+        }
     }
 }
 
