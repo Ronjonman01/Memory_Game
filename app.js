@@ -498,14 +498,17 @@ function endGame() {
     for(i=1;i<=parseInt(localStorage.gameType);i++) {
         localStorage.removeItem(`${i}`)
     }
-    localStorage.removeItem('currentScore')
-    localStorage.removeItem('gameType')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('gameInProgress')
-    localStorage.removeItem('hiddenDivs')
-    setTimeout(function() {localStorage.removeItem('chickensSelected')},2003)
-    localStorage.removeItem('firstSelectedChicken')
-    localStorage.removeItem('secondSelectedChicken')
+
+    setTimeout(function() {
+        localStorage.removeItem('chickensSelected')
+        localStorage.removeItem('currentScore')
+        localStorage.removeItem('gameType')
+        localStorage.removeItem('userName')
+        localStorage.removeItem('gameInProgress')
+        localStorage.removeItem('hiddenDivs')
+        localStorage.removeItem('firstSelectedChicken')
+        localStorage.removeItem('secondSelectedChicken')
+    },2010)
 }
 
 //This function puts a message and gif in the emptied game div to congratulate the user
