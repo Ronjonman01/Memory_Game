@@ -97,8 +97,11 @@ document.addEventListener('click',function(e){
         if(rules.classList.contains("invisible")=== false) {
         rules.classList.add("invisible")
         }
-        clearForm()
-        populateGameDiv()
+        if(localStorage.gameInProgress != undefined) {
+            clearForm()
+            populateGameDiv()
+        }
+
     }
 })
 
