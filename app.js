@@ -5,7 +5,7 @@
 
 //This prevents reloading of the page for submits
 document.addEventListener('submit',function(e){
-    e.preventDefault
+    e.preventDefault()
     
 })
 
